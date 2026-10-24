@@ -1,0 +1,159 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Examination Result Management System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f2f5fb;
+      color: #263238;
+    }
+    header {
+      background: #173b70;
+      color: white;
+      padding: 24px;
+      text-align: center;
+    }
+    main {
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 24px;
+      margin-bottom: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px #00000010;
+    }
+    input {
+      box-sizing: border-box;
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccd4df;
+      border-radius: 6px;
+    }
+    button {
+      padding: 12px 18px;
+      background: #1769aa;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover { background: #104d80; }
+    #result {
+      margin-top: 20px;
+      line-height: 1.8;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #657080;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Online Examination Result Management System</h1>
+    <p>View your examination results online</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Check Examination Result</h2>
+      <p>Enter your student details to view your result.</p>
+
+      <label for="studentId">Student ID</label>
+      <input id="studentId" placeholder="Example: STU101">
+
+      <label for="studentName">Student Name</label>
+      <input id="studentName" placeholder="Enter your name">
+
+      <button onclick="checkResult()">View Result</button>
+      <div id="result" aria-live="polite"></div>
+    </section>
+
+    <section class="card">
+      <h2>System Features</h2>
+      <ul>
+        <li>Student result lookup</li>
+        <li>Marks and percentage display</li>
+        <li>Pass or fail status</li>
+        <li>Simple, responsive interface</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>DevOps Lab Case Study | Online Examination Results</footer>
+
+  <script>
+    const results = {
+      STU101: {
+        name: "Rahul",
+        subject: "Computer Networks",
+        marks: 85,
+        total: 100
+      },
+      STU102: {
+        name: "Priya",
+        subject: "Database Management Systems",
+        marks: 92,
+        total: 100
+      },
+      STU103: {
+        name: "Arjun",
+        subject: "Operating Systems",
+        marks: 32,
+        total: 100
+      }
+    };
+
+    function checkResult() {
+      const id = document.getElementById("studentId").value
+        .trim().toUpperCase();
+      const name = document.getElementById("studentName").value.trim();
+      const result = document.getElementById("result");
+
+      if (!id || !name) {
+        result.textContent = "Please enter both Student ID and name.";
+        return;
+      }
+
+      const student = results[id];
+
+      if (!student || student.name.toLowerCase() !== name.toLowerCase()) {
+        result.textContent = "No matching result found. Check your details.";
+        return;
+      }
+
+      const percentage = (student.marks / student.total) * 100;
+      const status = student.marks >= 40 ? "PASS" : "FAIL";
+
+      result.replaceChildren();
+
+      const details = [
+        ["Student ID", id],
+        ["Student Name", student.name],
+        ["Subject", student.subject],
+        ["Marks", `${student.marks}/${student.total}`],
+        ["Percentage", `${percentage}%`],
+        ["Result", status]
+      ];
+
+      for (const [label, value] of details) {
+        const line = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = label + ": ";
+        line.append(strong, document.createTextNode(value));
+        result.appendChild(line);
+      }
+    }
+  </script>
+</body>
+</html>
